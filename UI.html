@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<title>
+  Beam
+</title>
+<head>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+  <style> body { font-family: 'Roboto Slab'; } .disabled { pointer-events: none; } .enabled { pointer-events: all; } </style>
+</head>
+
+<body>
+  <svg height = "800" width = "500">
+  </svg>
+  <div>
+  <script>
+
+    var height = 500;
+    var width = 500;
+    var waypointtoggle = [];
+
+    var svg = d3.select("svg");
+
+    var borderPath = svg.append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("height", height)
+    .attr("width", width)
+    .style("stroke", "black")
+    .style("fill", "none")
+    .style("stroke-width", 2);
+
+    var orange = svg.append("rect")
+                  .attr("x", (width/2)-1)
+                  .attr("y", 1)
+                  .attr("width", width/2)
+                  .attr("height", height/5)
+                  .attr("fill", "lightgray");
+
+    var orangeText = svg.append("text")
+                        .attr("x", 3*width/4)
+                        .attr("y", height/10)
+                        .attr("text-anchor", "middle")
+                        .text("Orange")
+                        .attr("fill", "darkorange");
+
+    var blue = svg.append("rect")
+                  .attr("x", 1)
+                  .attr("y", (2*height/3)-1)
+                  .attr("width", width/5)
+                  .attr("height", height/3)
+                  .attr("fill", "lightgray");
+
+    var blueText = svg.append("text")
+                        .attr("x", width/10)
+                        .attr("y", 5*height/6)
+                        .attr("text-anchor", "middle")
+                        .text("Blue")
+                        .attr("fill", "blue")
+
+    var pink = svg.append("rect")
+                  .attr("x", (4*width/5)-1)
+                  .attr("y", (2*height/3)-1)
+                  .attr("width", width/5)
+                  .attr("height", height/3)
+                  .attr("fill", "lightgray");
+
+    var pinkText = svg.append("text")
+                        .attr("x", 9*width/10)
+                        .attr("y", 5*height/6)
+                        .attr("text-anchor", "middle")
+                        .text("Pink")
+                        .attr("fill", "magenta");
+
+    var doorText = svg.append("text")
+                        .attr("x", 1*width/20)
+                        .attr("y", 2*height/6)
+                        .attr("text-anchor", "middle")
+                        .attr("transform", "translate(172, 145) rotate(90)")
+                        .text("Door")
+                        .attr("fill", "black");
+
+    var table = svg.append("circle")
+                   .attr("cx", width/2)
+                   .attr("cy", (2*height)/3)
+                   .attr("r", width/8)
+                   .attr("fill","lightgray");
+
+    var a = svg.append("text")
+               .attr("x", width/2)
+               .attr("y", (2*height)/3 - 30)
+               .attr("text-anchor", "middle")
+               .text("A");
+
+    var b = svg.append("text")
+               .attr("x", width/2)
+               .attr("y", (2*height)/3 + 30)
+               .attr("text-anchor", "middle")
+               .text("B");
+
+    var door = svg.append("rect")
+                  .style("stroke", "black")
+                  .attr("fill", "none")
+                  .attr("x", 0)
+                  .attr("y", 125)
+                  .attr("width", 20)
+                  .attr("height", 100)
+
+    var waypoint1 = svg.append("svg:image")
+                    .attr('x',(width/2)-10)
+                    .attr('y', (5*height/11))
+                    .attr('width', 24)
+                    .attr('height', 24)
+                    .attr("xlink:href", "waypointC.png")
+                    .attr("opacity", .3)
+                    .attr("class", "enabled")
+                    .attr("id","C");
+
+    var waypoint2 = svg.append("svg:image")
+                    .attr('x',(3*width/4))
+                    .attr('y', height/4)
+                    .attr('width', 24)
+                    .attr('height', 24)
+                    .attr("xlink:href", "waypointT.png")
+                    .attr("opacity", .3)
+                    .attr("class", "enabled")
+                    .attr("id","O");
+
+    var waypoint3 = svg.append("svg:image")
+                    .attr('x', width/4 - 10)
+                    .attr('y', 4*height/5)
+                    .attr('width', 24)
+                    .attr('height', 24)
+                    .attr("xlink:href", "waypointB.png")
+                    .attr("opacity", .3)
+                    .attr("class", "enabled")
+                    .attr("id","B");
+
+    var waypoint4 = svg.append("svg:image")
+                    .attr('x', (3*width)/4 - 10)
+                    .attr('y', 4*height/5)
+                    .attr('width', 24)
+                    .attr('height', 24)
+                    .attr("xlink:href", "waypointP.png")
+                    .attr("opacity", .3)
+                    .attr("class", "enabled")
+                    .attr("id","P");
+
+    var waypoint5 = svg.append("svg:image")
+                    .attr('x', width/4 - 10)
+                    .attr('y', height/4)
+                    .attr('width', 24)
+                    .attr('height', 24)
+                    .attr("xlink:href", "waypointD.png")
+                    .attr("opacity", .3)
+                    .attr("class", "enabled")
+                    .attr("id","D");
+
+    var waypoint6 = svg.append("svg:image")
+                    .attr('x',(width/2)-10)
+                    .attr('y', (10*height/11) - 10)
+                    .attr('width', 24)
+                    .attr('height', 24)
+                    .attr("xlink:href", "WaypointT.png")
+                    .attr("opacity", .3)
+                    .attr("class", "enabled")
+                    .attr("id","T");
+
+    var buttonInstructions1 = svg.append("text")
+                                .attr('x',55)
+                                .attr('y', 550)
+                                .text("Click to switch between driving modes below.")
+
+    var buttonInstructions2 = svg.append("text")
+                                .attr('x', 55)
+                                .attr('y', 570)
+                                .text("Auto-pilot mode enables you to click on the map")
+
+    var buttonInstructions3 = svg.append("text")
+                                .attr('x', 55)
+                                .attr('y', 590)
+                                .text("to control the beam. Manual mode enables you to")
+
+    var buttonInstructions4 = svg.append("text")
+                                .attr('x', 55)
+                                .attr('y', 610)
+                                .text("drive the beam manually using the arrow keys.")
+
+    var manual = svg.append("svg:image")
+                    .attr('x', 255)
+                    .attr('y', 585)
+                    .attr('width', 200)
+                    .attr('height', 200)
+                    .attr("xlink:href", "manual.png")
+                    .attr("opacity", .3)
+                    .attr("class", "button")
+                    .attr("id","manual");
+
+    var autopilot = svg.append("svg:image")
+                    .attr('x', 50)
+                    .attr('y', 585)
+                    .attr('width', 200)
+                    .attr('height', 200)
+                    .attr("xlink:href", "autopilot.png")
+                    .attr("opacity", 1)
+                    .attr("class", "button")
+                    .attr("id","autopilot");
+
+    var greyed = svg.append("rect")
+                    .attr('x', 500)
+                    .attr('y', 0)
+                    .attr('width', width)
+                    .attr('height', height)
+                    .attr('fill', 'grey')
+                    .attr('opacity', 0)
+                    .attr('id', 'greyed');
+
+    var waypointClick = svg.selectAll(".enabled")
+                    .each(function () { d3.select(this)
+                    .on("click", function() {
+                                              if(waypointtoggle.length == 0){
+                                                    d3.select(this).transition().duration(250)
+                                                    .attr("opacity", 1)
+                                                    waypointtoggle.push(this)
+                                                    console.log(this.id)
+                                              } else{
+                                                console.log(this.id)
+                                                d3.select(waypointtoggle[0]).transition().duration(250)
+                                                .attr("opacity",0.3)
+                                                waypointtoggle.shift();
+                                                d3.select(this)
+                                                .attr("opacity",1)
+                                                waypointtoggle.push(this)
+                                              }
+
+                                            });
+
+
+    var disable = svg.select("#manual")
+                    .on("click", function() { d3.select(this).transition().duration(500).attr("opacity", 1)
+                                              svg.selectAll(".enabled").attr("class", "disabled")
+                                              svg.select("#autopilot").transition().duration(500).attr("opacity", .3)
+
+                                              svg.select('#greyed').attr("x", 0)
+                                              svg.select('#greyed').transition().duration(500).attr("opacity", .5)
+                                            });
+
+    var enable = svg.select("#autopilot")
+                    .on("click", function() { d3.select(this).transition().duration(500).attr("opacity", 1)
+                                              svg.select("#manual").transition().duration(500).attr("opacity", .3)
+                                              svg.selectAll(".disabled").attr("class", "enabled")
+
+
+                                              svg.select('#greyed').transition().duration(500).attr("opacity", 0)
+                                              svg.select('#greyed').transition().delay(500).duration(0).attr("x", 500)
+
+                  });
+
+
+    });
+  </script>
+</div>
+
+</body>
