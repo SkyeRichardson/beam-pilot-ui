@@ -7,7 +7,20 @@
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
-  <style> body { font-family: 'Roboto Slab'; } .disabled { pointer-events: none; } .enabled { pointer-events: all; } </style>
+  <style> body { font-family: 'Roboto Slab'; }
+          svg { center: 50px; }
+          .disabled { pointer-events: none; }
+          .enabled { pointer-events: all; }
+          .rotate {
+                    animation: rotate 2s infinite linear;
+                    transform-origin: 50% 239.77px;
+                 }
+
+          @-webkit-keyframes rotate {
+                0% { transform: rotate(0deg);}
+                100% { transform: rotate(360deg);}
+                }
+</style>
 </head>
 
 <body>
@@ -221,17 +234,26 @@
                     .on("click", function() {
                                               if(waypointtoggle.length == 0){
                                                     d3.select(this).transition().duration(250)
-                                                    .attr("opacity", 1)
-                                                    waypointtoggle.push(this)
-                                                    console.log(this.id)
-                                              } else{
-                                                console.log(this.id)
+                                                    .attr("opacity", 1);
+                                                    waypointtoggle.push(this);
+                                                    console.log(this.id);
+                                              } else if (waypointtoggle[0] == this) {
+                                                    d3.select(waypointtoggle[0]).transition().duration(250)
+                                                    .attr("opacity",0.3);
+                                                    waypointtoggle.shift();
+                                                    d3.select(this)
+                                                    .attr("opacity",1);
+                                                    waypointtoggle.shift();
+                                                    console.log(this.id);
+                                              }
+                                              else{
+                                                console.log(this.id);
                                                 d3.select(waypointtoggle[0]).transition().duration(250)
-                                                .attr("opacity",0.3)
+                                                .attr("opacity",0.3);
                                                 waypointtoggle.shift();
                                                 d3.select(this)
-                                                .attr("opacity",1)
-                                                waypointtoggle.push(this)
+                                                .attr("opacity",1);
+                                                waypointtoggle.push(this);
                                               }
 
                                             });
